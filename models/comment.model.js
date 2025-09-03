@@ -5,7 +5,12 @@ const commentSchema = new mongoose.Schema({
   
   user: { // Link comment to user schema
     type: mongoose.Schema.Types.ObjectId,
-    ref: UserModel, //user Model
+    ref: "User", //user Model
+    required: true
+  },
+  videoId: { // Link comment to video schema
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Video", //Video Model
     required: true
   },
   text: {

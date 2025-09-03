@@ -27,5 +27,5 @@ db.off("error",()=>{
 })
 
 app.listen(3100,()=>{
-    console.log("server is runing")
+    console.log("server is running")
 })

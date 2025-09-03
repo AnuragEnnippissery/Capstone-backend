@@ -22,12 +22,13 @@ const videoSchema = new mongoose.Schema({
     trim: true
   },
   channelId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Channel",
     required: true
   },
   uploader: { // Link uploader to User schema
     type: mongoose.Schema.Types.ObjectId,
-    ref: UserModel,
+    ref: "User",
     required: true
   },
   views: {
@@ -47,7 +48,7 @@ const videoSchema = new mongoose.Schema({
     default: Date.now
   },
   comments: [{type: mongoose.Schema.Types.ObjectId,
-    ref: CommentModel}]
+    ref: "Comment"}]
 });
 
 // Create the model
