@@ -4,6 +4,7 @@ import UserRoutes from "./routes/user.route.js"
 import cors from "cors"
 import { CommentRoutes } from "./routes/comment.route.js"
 import { VideoRoutes } from "./routes/video.route.js"
+import ChannelRoutes from "./routes/channel.routes.js"
 
 const app=express()
 app.use(express.json())
@@ -11,6 +12,7 @@ app.use(cors())
 UserRoutes(app)
 CommentRoutes(app)
 VideoRoutes(app)
+ChannelRoutes(app)
 
 
 
