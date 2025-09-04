@@ -3,7 +3,7 @@ import Channel from "../models/channel.model.js";
 
 export async function InsertVideos(req,res){
     try {
-    const { title, thumbnailUrl, videoUrl, description, channelId,uploader,views,likes,dislikes,comments } = req.body;
+    const { title, thumbnailUrl, videoUrl, description, channelId,uploader,views,likes,dislikes,category,comments } = req.body;
 
     const newVideo = new Video({
       title,
@@ -15,6 +15,7 @@ export async function InsertVideos(req,res){
       views,
       likes,
       dislikes,
+      category,
       comments
     });
 
@@ -36,6 +37,9 @@ export async function GetVideos(req,res){
           path: "user",            // then populate user inside each comment
           select: "username email" // only return username & email
         }
+      }).populate({
+        path: "channelId",   // field in your Video schema that stores channel reference
+        select: "channelName description" // only return what you need
       });
     
     res.send(AllVideos)
