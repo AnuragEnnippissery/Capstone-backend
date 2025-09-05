@@ -57,7 +57,11 @@ export async function GetSingleVideo(req,res){
           path: "user",            // then populate user inside each comment
           select: "username email" // only return username & email
         }
+      }).populate({
+        path: "channelId",   // field in your Video schema that stores channel reference
+        select: "channelName description" // only return what you need
       });
+    
     ;
     if(!video){
       res.status(400).json({"message":"video does not exist"})
