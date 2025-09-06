@@ -39,7 +39,7 @@ export async function GetVideos(req,res){
         }
       }).populate({
         path: "channelId",   // field in your Video schema that stores channel reference
-        select: "channelName description" // only return what you need
+        select: "channelName description " // only return what you need
       });
     
     res.send(AllVideos)
@@ -59,7 +59,7 @@ export async function GetSingleVideo(req,res){
         }
       }).populate({
         path: "channelId",   // field in your Video schema that stores channel reference
-        select: "channelName description" // only return what you need
+        select: "channelName description subscribers" // only return what you need
       });
     
     ;
