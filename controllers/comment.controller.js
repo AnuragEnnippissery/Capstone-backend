@@ -12,7 +12,11 @@ export async function InsertComment(req,res){
         await newComment.save() // insert into db
         await Video.findByIdAndUpdate(videoId, {
         $push: { comments: newComment._id }})
-        res.status(201).json({ message: "Comment uploaded successfully!", comment: newComment });
+
+        // Populate username before sending response
+      const populatedComment = await CommentModel.findById(newComment._id)
+      .populate("user", "username"); // only get username from user
+        res.status(201).json({ message: "Comment uploaded successfully!", comment: populatedComment });
 
     }
     catch (err) {
@@ -35,9 +39,12 @@ export async function UpdateComment(req, res) {
       return res.status(404).json({ message: "Comment with this ID does not exist" });
     }
 
+      // Populate username before sending response
+      const populatedComment = await CommentModel.findById(updatedComment._id)
+      .populate("user", "username"); // only get username from user
     return res.status(200).json({
       message: "Comment updated successfully",
-      updatedComment,
+      populatedComment,
     });
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong", error: error.message });
