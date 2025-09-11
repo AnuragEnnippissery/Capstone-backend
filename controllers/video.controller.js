@@ -74,3 +74,47 @@ export async function GetSingleVideo(req,res){
     res.status(500).json({"message":" video id not found"})
   }
 }
+
+export async function UpdateVideo(req, res) {
+  try {
+    const VideoId = req.params.id;
+
+    // Update and return the new video
+    const updatedVideo = await Video.findByIdAndUpdate(
+      VideoId,
+      { $set: req.body },   // only update the fields passed in req.body
+      { new: true }         // return the updated document instead of the old one
+    );
+
+    if (!updatedVideo) {
+      return res.status(404).json({ message: "Video with this ID does not exist" });
+    }
+
+      // Populate username before sending response
+      //const populatedComment = await CommentModel.findById(updatedComment._id)
+      //.populate("user", "username"); // only get username from user
+    return res.status(200).json({
+      message: "Video updated successfully",
+      updatedVideo,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Something went wrong", error: error.message });
+  }
+}
+
+export async function DeleteVideo(req,res){
+  try{
+
+    const VideoId = req.params.id;
+    const deletedVideo = await Video.findByIdAndDelete(VideoId)
+
+    if(!deletedVideo){
+      return res.status(404).json({message:"video with id do not exist"});
+    }
+
+    return res.status(200).json({message:"video deleted successfully", deletedVideo});
+  }
+  catch(error){
+    return res.status(500).json({message:"error has occured in delete",error:error.message});
+  }
+}
