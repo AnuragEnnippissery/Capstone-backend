@@ -49,11 +49,39 @@ export async function GetSingleChannel(req,res){
         select: "username"
       });
         if(!channel){
-            res.status(500).json({message:"channel ID not found"})
+            res.status(404).json({message:"channel ID not found"})
         }
+    // Check if the logged-in user is the owner
+    if (channel.owner._id.toString() !== req.user.id) {
+      return res.status(403).json({ message: "You do not own this channel" });
+    }
     res.status(200).json(channel);
     }
     catch{
         res.status(500).json({message:"single channel is failed"})
     }
+}
+
+// controller
+export async function GetMyChannel(req, res) {
+  try {
+    //console.log("Decoded user in req:", req.user);
+    const channel = await Channel.findOne({ owner: req.user.id })
+      .populate({
+        path: "videos",
+        select: "title thumbnailUrl views"
+      })
+      .populate({
+        path: "owner",
+        select: "username"
+      });
+
+    if (!channel) {
+      return res.status(404).json({ message: "Channel not found" });
+    }
+
+    res.json(channel);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 }
