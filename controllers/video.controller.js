@@ -118,3 +118,29 @@ export async function DeleteVideo(req,res){
     return res.status(500).json({message:"error has occured in delete",error:error.message});
   }
 }
+
+export async function UpdateLikes(req, res) {
+  try {
+    const VideoId = req.params.id;
+
+    // Example: { likes: 1 } or { dislikes: -1 }
+    const updateField = {};
+    if (req.body.likes) updateField.likes = req.body.likes;
+    if (req.body.dislikes) updateField.dislikes = req.body.dislikes;
+
+    const updatedVideo = await Video.findByIdAndUpdate(
+      VideoId,
+      { $inc: updateField }, // increment or decrement
+      { new: true }
+    );
+
+    if (!updatedVideo) {
+      return res.status(404).json({ message: "Video with this ID does not exist" });
+    }
+
+    return res.status(200).json(updatedVideo);
+
+  } catch (error) {
+    return res.status(500).json({ message: "Something went wrong", error: error.message });
+  }
+}
